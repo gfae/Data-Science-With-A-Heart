@@ -1,8 +1,12 @@
 from PyQt6 import QtWidgets, uic
 import pandas as pd
 import numpy as np
+from PyQt6.QtCore import QRegularExpression
+from PyQt6.QtGui import QRegularExpressionValidator
 from PyQt6.QtWidgets import QMessageBox
 
+
+from ML import ML
 
 def readData():
     age = call.lineEdit_Age.text()
@@ -20,28 +24,40 @@ def readData():
     thalIndex, thal = call.comboBox_Thal.currentIndex(), call.comboBox_Thal.currentText()
 
     dfData = [age, sexIndex, CPIndex, BP, chol, FBS, ECGIndex, HR, EIAIndex, STD, STSIndex, CMBVIndex, thalIndex]
+    data = [age, sex, CP, BP, chol, FBS, ECG, HR, EIA, STD, STS, CMBV, thal]
+    # for i in range(len(data)):
+    #     if data[i] == -1 or data[i] == "":
+    #         data[i] = np.nan
+    #     else:
+    #         if data[i].isdigit():
+    #             data[i] = int(data[i])
+    #         else:
+    #             data[i] = float(data[i])
     for i in range(len(dfData)):
         if dfData[i] == -1 or dfData[i] == "":
             dfData[i] = np.nan
-    createDf(dfData)
-
-    data = [age, sex, CP, BP, chol, FBS, ECG, HR, EIA, STD, STS, CMBV, thal]
-    showResults(data)
-
-
+        else:
+            if dfData[i].isdigit():
+                dfData[i] = int(dfData[i])
+            else:
+                dfData[i] = float(dfData[i])
+    # showResults(data)
+    return createDf(dfData)
 
 def createDf(data):
+    print(data)
     df2 = pd.DataFrame([data], columns=['Age', 'Sex', 'Chest_pain_type', 'Resting_bp',
                                         'Cholesterol', 'Fasting_bs', 'Resting_ecg',
                                         'Max_heart_rate', 'Exercise_induced_angina',
                                         'ST_depression', 'ST_slope', 'Num_major_vessels',
                                         'Thallium_test'])
-    print(df2)
-
+    print (df2)
+    # result = ML(df2)
+    # print(result)
 
 def showResults(data):
     msg = QMessageBox()
-    result = "placeholder result"
+    result = data
     # maybe use later?
     # msg.setText(f"<html><body><h3>Patient details</h3>"
     #             f"<p>Age: {data[0]}<br>"
@@ -68,7 +84,7 @@ def clearData():
     call.comboBox_CP.setCurrentIndex(-1)
     call.lineEdit_BP.clear()
     call.lineEdit_Chol.clear()
-    call.lineEdit_FBS.clear()
+    call.comboBox_FBS.setCurrentIndex(-1)
     call.comboBox_ECG.setCurrentIndex(-1)
     call.lineEdit_HR.clear()
     call.comboBox_EIA.setCurrentIndex(-1)
@@ -80,6 +96,14 @@ def clearData():
 
 app = QtWidgets.QApplication([])
 call = uic.loadUi("testUI.ui")
+
+validator = QRegularExpressionValidator(QRegularExpression(r'[0-9]+'))
+decimalValidator = QRegularExpressionValidator(QRegularExpression(r'[0-9]+\.[0-9]'))
+call.lineEdit_HR.setValidator(validator)
+call.lineEdit_STP.setValidator(decimalValidator)
+call.lineEdit_BP.setValidator(validator)
+call.lineEdit_Age.setValidator(validator)
+call.lineEdit_Chol.setValidator(validator)
 
 call.pushButton.clicked.connect(readData)
 call.pushButton_2.clicked.connect(clearData)
