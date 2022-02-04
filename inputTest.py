@@ -6,6 +6,7 @@ from PyQt6.QtGui import QRegularExpressionValidator
 from PyQt6.QtWidgets import QMessageBox
 from ML import ML
 
+
 def readData():
     age = call.lineEdit_Age.text()
     sex = call.comboBox_Sex.currentIndex()
@@ -27,22 +28,45 @@ def readData():
             data[i] = np.nan
     return createDf(data)
 
+
+def confirmClear():
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Icon.Question)
+    msg.setText(f"Are you are you wish to clear the data?")
+    msg.setWindowTitle("Confirm")
+    msg.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
+    result = msg.exec()
+    if result == QMessageBox.StandardButton.Ok:
+        clearData()
+
+
+def confirmSubmit():
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Icon.Question)
+    msg.setText(f"Are you are you wish to submit the data?")
+    msg.setWindowTitle("Confirm")
+    msg.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
+    result = msg.exec()
+    if result == QMessageBox.StandardButton.Ok:
+        readData()
+
+
 def createDf(data):
-    print(data)
-    df2 = pd.DataFrame([data], columns=['Age', 'Sex', 'Chest_pain_type', 'Resting_bp',
-                                        'Cholesterol', 'Fasting_bs', 'Resting_ecg',
-                                        'Max_heart_rate', 'Exercise_induced_angina',
-                                        'ST_depression', 'ST_slope', 'Num_major_vessels',
-                                        'Thallium_test'])
-    print (df2)
-    result = ML(df2)
+    userDF = pd.DataFrame([data], columns=['Age', 'Sex', 'Chest_pain_type', 'Resting_bp',
+                                           'Cholesterol', 'Fasting_bs', 'Resting_ecg',
+                                           'Max_heart_rate', 'Exercise_induced_angina',
+                                           'ST_depression', 'ST_slope', 'Num_major_vessels',
+                                           'Thallium_test'])
+    result = ML(userDF)
     return showResults(result)
+
 
 def showResults(result):
     msg = QMessageBox()
     msg.setText(f"Result: {result}")
     msg.setWindowTitle("Results")
     msg.exec()
+
 
 def clearData():
     call.lineEdit_Age.clear()
@@ -71,8 +95,8 @@ call.lineEdit_BP.setValidator(validator)
 call.lineEdit_Age.setValidator(validator)
 call.lineEdit_Chol.setValidator(validator)
 
-call.pushButton.clicked.connect(readData)
-call.pushButton_2.clicked.connect(clearData)
+call.pushButton.clicked.connect(confirmSubmit)
+call.pushButton_2.clicked.connect(confirmClear)
 
 call.show()
 app.exec()
