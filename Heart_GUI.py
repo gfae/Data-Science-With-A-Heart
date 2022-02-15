@@ -58,6 +58,7 @@ def createDf(data):
                                            'ST_depression', 'ST_slope', 'Num_major_vessels',
                                            'Thallium_test'])
     result = ML(userDF)
+    result = "Positive" if result[0] == 1 else "Negative"
     return showResults(result)
 
 

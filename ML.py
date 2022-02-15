@@ -17,6 +17,10 @@ def ML(testDF):
                   'Max_heart_rate', 'Exercise_induced_angina',
                   'ST_depression', 'ST_slope', 'Num_major_vessels',
                   'Thallium_test', 'Condition']
+    naVal = testDF.columns[testDF.isna().any()].tolist()
+    for val in naVal:
+        del testDF[val]
+        del df[val]
     X = df.drop(['Condition'], axis=1)
     y = df.Condition
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
