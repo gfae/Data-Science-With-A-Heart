@@ -8,6 +8,7 @@ def get_model_accuracy(model, X_test, y_test):
     model_acc = model.score(X_test, y_test)
     return model_acc
 
+
 def ML(testDF):
     currentDir = dirname(__file__)
     filePath = join(currentDir, "./heart.csv")
