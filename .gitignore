@@ -1,5 +1,5 @@
 /env
 /__pycache__
 /.idea
-/testUI.ui
+/UI_Design.py
 clusterfuck.py
