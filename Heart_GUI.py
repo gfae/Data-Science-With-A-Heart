@@ -86,7 +86,7 @@ def clearData():
 
 
 app = QtWidgets.QApplication([])
-call = uic.loadUi("testUI.ui")
+call = uic.loadUi("UI_Design.ui")
 
 validator = QRegularExpressionValidator(QRegularExpression(r'[0-9]+'))
 decimalValidator = QRegularExpressionValidator(QRegularExpression(r'[0-9]+\.[0-9]'))
