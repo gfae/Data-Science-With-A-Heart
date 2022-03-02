@@ -2,20 +2,10 @@ import pandas as pd
 from os.path import dirname, join
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-# from xgboost import XGBClassifier
-
-from sklearn.ensemble import VotingClassifier, RandomForestClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.model_selection import cross_val_score
-from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score
-
 
 def get_model_accuracy(model, X_test, y_test):
     model_acc = model.score(X_test, y_test)
     return model_acc
-
 
 def ML(testDF):
     currentDir = dirname(__file__)
