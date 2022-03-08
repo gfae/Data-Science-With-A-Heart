@@ -22,12 +22,12 @@ def ML(testDF):
         del df[val]
     X = df.drop(['Condition'], axis=1)
     y = df.Condition
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
     lr = LogisticRegression(solver='newton-cg', max_iter=1000, random_state=42)
-    lr.fit(X_train, y_train)
-    lrAcc = get_model_accuracy(lr, X_test, y_test)
-    print(f'Logistic Regression Accuracy: {lrAcc:.4}')
+    lr.fit(X, y)
+    # lrAcc = get_model_accuracy(lr, X_test, y_test)
+    # print(f'Logistic Regression Accuracy: {lrAcc:.4}')
 
     prediction = lr.predict(testDF)
     return prediction
